@@ -9,15 +9,14 @@ public class Main extends Application {
 
     @Override
 public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Resources/Main.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Hello!");
+        stage.setTitle("Volleyball statistics Tracker");
         stage.setScene(scene);
         stage.show();
     }
 
     public static void main(String[] args) {
-        System.out.println("Hello world!");
         launch();
 
 
