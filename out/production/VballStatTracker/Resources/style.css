@@ -1,0 +1,24 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
+
+
+* {
+   -fx-main_base: #e1b382;
+   -fx-main_accent: #ffaaab;
+   -fx-font-family: 'Quicksand', sans-serif;
+}
+
+.root {
+
+    -fx-background-color: -fx-main_base;
+
+}
+
+.button {
+    -fx-padding: 10px;
+    -fx-border-insets: 10px;
+    -fx-background-insets: 10px;
+    -fx-pref-width: 100px;
+    -fx-pref-height: 100px;
+    -fx-background-color: -fx-main_accent;
+}
