@@ -43,7 +43,16 @@ public class OuterLayerController {
         hboxItems.setAlignment(Pos.CENTER);
 
         for (Map.Entry<Integer, String> me : teams_map.entrySet()) {
-            hboxItems.getChildren().add( new Button(me.getValue()));
+            Button team_button = new Button(me.getValue());
+            team_button.setId(me.getKey().toString());
+            hboxItems.getChildren().add(team_button);
+            team_button.setOnAction(event -> {
+                try {
+                    TeamScene(event);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
         }
 
         Button addTeamsButton = new Button("Add a team +");
@@ -63,6 +72,19 @@ public class OuterLayerController {
 
     private void CreateTeamScene(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/CreateTeamScene.fxml"));
+        root = loader.load();
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        scene.getStylesheets().add("/Resources/style.css");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private void TeamScene(ActionEvent event) throws IOException {
+        Node source = (Node) event.getSource();
+        JavaPostgreSQL.setCurTeamID(Integer.parseInt(source.getId()));
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/TeamScene.fxml"));
         root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);

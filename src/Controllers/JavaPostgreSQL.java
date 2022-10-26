@@ -15,6 +15,23 @@ public class JavaPostgreSQL {
     private static String user = "postgres";
     private static String pass  = "lucas";
     private static Connection con;
+    private static int curTeamID;
+    private static int curEventID;
+    private static int curPlayerID;
+
+    public static void setCurTeamID(int teamID) {
+        System.out.println("SETTING CUR TEAM ID TO: ");
+        System.out.println(teamID);
+        curTeamID = teamID;
+    }
+
+    public static void setCurEventID(int eventID) {
+        curEventID = eventID;
+    }
+
+    public static void setCurPlayerID(int playerID) {
+        curPlayerID = playerID;
+    }
 
     private static void createConn() throws SQLException {
         con = DriverManager.getConnection(url, user, pass);
