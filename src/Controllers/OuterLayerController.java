@@ -13,8 +13,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class OuterLayerController {
 
@@ -30,29 +32,29 @@ public class OuterLayerController {
     @FXML
     private void initialize() throws IOException{
         System.out.println("INITIALIZE METHOD CALLED");
+        Map<Integer, String> teams_map;
+        try {
+            teams_map = JavaPostgreSQL.queryTeams();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         HBox hboxItems = new HBox();
         hboxItems.setAlignment(Pos.CENTER);
-        List<Button> buttonlist = new ArrayList<>();
-//        buttonlist.add(new Button("These"));
-//        buttonlist.add(new Button("are"));
-//        buttonlist.add(new Button("generated"));
-//        buttonlist.add(new Button("buttons"));
 
-        if (buttonlist.size() == 0) {
-            Button addTeamsButton = new Button("Add a team +");
-            hboxItems.getChildren().add(addTeamsButton);
-            addTeamsButton.setOnAction(event -> {
-                try {
-                    CreateTeamScene(event);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+        for (Map.Entry<Integer, String> me : teams_map.entrySet()) {
+            hboxItems.getChildren().add( new Button(me.getValue()));
         }
-        else {
-            hboxItems.getChildren().addAll(buttonlist);
-        }
+
+        Button addTeamsButton = new Button("Add a team +");
+        hboxItems.getChildren().add(addTeamsButton);
+        addTeamsButton.setOnAction(event -> {
+            try {
+                CreateTeamScene(event);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         mainLayout.getChildren().add(hboxItems);
     }
@@ -67,9 +69,5 @@ public class OuterLayerController {
         scene.getStylesheets().add("/Resources/style.css");
         stage.setScene(scene);
         stage.show();
-    }
-
-    public void testAction(ActionEvent event) {
-        System.out.println("test action");
     }
 }
