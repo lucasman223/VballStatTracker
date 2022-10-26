@@ -21,5 +21,8 @@ public class CreateTeamController {
 
     public void addTeam(ActionEvent event) {
         System.out.println("add team!");
+        System.out.println(teamNameTF.getText());
+
+        JavaPostgreSQL.writeToDatabase(teamNameTF.getText());
     }
 }
