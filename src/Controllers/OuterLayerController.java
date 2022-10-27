@@ -24,6 +24,8 @@ public class OuterLayerController {
     private Scene scene;
     private Parent root;
 
+    private Map<Integer, String> teams_map;
+
     @FXML
     Button tb1;
     @FXML
@@ -32,7 +34,7 @@ public class OuterLayerController {
     @FXML
     private void initialize() throws IOException{
         System.out.println("INITIALIZE METHOD CALLED");
-        Map<Integer, String> teams_map;
+//        Map<Integer, String> teams_map;
         try {
             teams_map = JavaPostgreSQL.queryTeams();
         } catch (SQLException e) {
@@ -82,7 +84,7 @@ public class OuterLayerController {
 
     private void TeamScene(ActionEvent event) throws IOException {
         Node source = (Node) event.getSource();
-        JavaPostgreSQL.setCurTeamID(Integer.parseInt(source.getId()));
+        JavaPostgreSQL.setCurTeamIDs(Integer.parseInt(source.getId()), teams_map.get(Integer.parseInt(source.getId())));
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/TeamScene.fxml"));
         root = loader.load();

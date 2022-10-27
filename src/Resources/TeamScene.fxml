@@ -5,20 +5,19 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.TeamSceneController">
    <children>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button mnemonicParsing="false" text="Back" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name of Team" textAlignment="CENTER" wrappingWidth="198.72527313232422" />
-            <Button mnemonicParsing="false" text="Delete Team" textAlignment="CENTER" />
+            <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" text="Back" />
+            <Text fx:id="teamName" strokeType="OUTSIDE" strokeWidth="0.0" text="Name of Team" textAlignment="CENTER" wrappingWidth="198.72527313232422" />
+            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteTeam" text="Delete Team" textAlignment="CENTER" />
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button mnemonicParsing="false" text="Edit Team" />
-            <Button mnemonicParsing="false" text="Track Stats" />
+            <Button fx:id="editTeamButton" mnemonicParsing="false" onAction="#editTeam" text="Edit Team" />
+            <Button fx:id="trackStatsButton" mnemonicParsing="false" text="Track Stats" />
          </children>
       </HBox>
    </children>

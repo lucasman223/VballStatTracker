@@ -19,10 +19,20 @@ public class JavaPostgreSQL {
     private static int curEventID;
     private static int curPlayerID;
 
-    public static void setCurTeamID(int teamID) {
+    private static String curTeamName;
+
+    public static int getCurTeamID() {
+        return curTeamID;
+    }
+    public static String getCurTeamName() {
+        return curTeamName;
+    }
+
+    public static void setCurTeamIDs(int teamID, String teamName) {
         System.out.println("SETTING CUR TEAM ID TO: ");
         System.out.println(teamID);
         curTeamID = teamID;
+        curTeamName = teamName;
     }
 
     public static void setCurEventID(int eventID) {
@@ -74,5 +84,26 @@ public class JavaPostgreSQL {
         st.close();
 
         return teams_map;
+    }
+
+    public static void deleteTeam() throws SQLException{
+        //TODO may need to delete other things from other tables before deleting the team itself ex events and stats
+        //^^single query ok for now
+        System.out.println("ID OF TEAM GETTING DELETED");
+        System.out.println(String.valueOf(curTeamID));
+        createConn();
+        String query = "DELETE FROM teams WHERE team_id = ?::int";
+
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+
+            pst.setString(1, String.valueOf(curTeamID));
+
+            pst.executeUpdate();
+            System.out.println("DELETE TEAM");
+
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
 }
