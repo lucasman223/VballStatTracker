@@ -1,5 +1,7 @@
 package Controllers;
 
+import javafx.scene.control.TableView;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,7 +98,7 @@ public class JavaPostgreSQL {
 
         try (PreparedStatement pst = con.prepareStatement(query)) {
 
-            pst.setString(1, String.valueOf(curTeamID));
+            pst.setInt(1, curTeamID);
 
             pst.executeUpdate();
             System.out.println("DELETE TEAM");
@@ -106,4 +108,50 @@ public class JavaPostgreSQL {
             lgr.log(Level.SEVERE, e.getMessage(), e);
         }
     }
+
+    public static void queryTeamPlayers(TableView playerList) throws SQLException {
+        System.out.println("QUERY TEAM PLAYERS");
+
+        createConn();
+        String query = "SELECT number, player_name FROM players WHERE team_id = ?::int";
+
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+            pst.setInt(1, curTeamID);
+            ResultSet rs = pst.executeQuery();
+
+            while(rs.next()) {
+                int num = rs.getInt(1);
+                String name = rs.getString(2);
+
+                Player p = new Player(num, name);
+                playerList.getItems().add(p);
+            }
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        }
+
+    }
+
+    public static void writePlayerToDB(int num, String name) throws SQLException {
+        createConn();
+
+        String query = "INSERT INTO players (team_id, player_name, number) VALUES (?, ?, ?)";
+
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+
+            pst.setInt(1, curTeamID);
+            pst.setString(2, name);
+            pst.setInt(3, num);
+
+            pst.executeUpdate();
+            System.out.println("Successfully updated players");
+
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        }
+    }
+
+
 }
