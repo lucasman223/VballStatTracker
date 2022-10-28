@@ -11,7 +11,7 @@
          <children>
             <Button mnemonicParsing="false" onAction="#goBack" text="Back" />
             <Text fx:id="teamNameAndEvent" strokeType="OUTSIDE" strokeWidth="0.0" text="Name of Team + Event" />
-            <Button mnemonicParsing="false" text="DeleteEvent" />
+            <Button mnemonicParsing="false" onAction="#deleteEvent" text="DeleteEvent" />
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">

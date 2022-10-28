@@ -42,13 +42,12 @@ public class EventsSceneController {
         hboxItems.setAlignment(Pos.CENTER);
 
         for (Map.Entry<Integer, String> me : events_map.entrySet()) {
-            //TODO FIGURE OUT WHY ONLY ONE EVENT IS SHOWING
             Button team_button = new Button(me.getValue());
             team_button.setId(me.getKey().toString());
             hboxItems.getChildren().add(team_button);
             team_button.setOnAction(event -> {
                 try {
-                    CurEventScene(event); //TODO create method
+                    CurEventScene(event);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -59,7 +58,7 @@ public class EventsSceneController {
         hboxItems.getChildren().add(addTeamsButton);
         addTeamsButton.setOnAction(event -> {
             try {
-                CreateEventScene(event); //TODO create scene change
+                CreateEventScene(event);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

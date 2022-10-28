@@ -120,6 +120,7 @@ public class JavaPostgreSQL {
 
     public static void deleteTeam() throws SQLException{
         //TODO may need to delete other things from other tables before deleting the team itself ex events and stats
+        //TODO DELETE EVENTS associated with team
         try {
             createConn();
             String query1 = "DELETE FROM players WHERE team_id = ?::int";
@@ -227,7 +228,7 @@ public class JavaPostgreSQL {
 
     public static Map<Integer, String> queryEvents() throws SQLException {
         createConn();
-        String query = "SELECT team_id, event_name FROM events WHERE team_id = ?::int";
+        String query = "SELECT event_id, event_name FROM events WHERE team_id = ?::int";
         Map<Integer, String> events_map = new HashMap<Integer, String>();
 
         try (PreparedStatement pst = con.prepareStatement(query)) {
@@ -246,6 +247,24 @@ public class JavaPostgreSQL {
         closeConn();
 
         return events_map;
+    }
+
+    public static void deleteEvent() throws SQLException {
+        try {
+            createConn();
+            String query = "DELETE FROM events WHERE event_id = ?::int";
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, curEventID);
+
+            pst.executeUpdate();
+
+            System.out.println("DELETE EVENT SUCCESS");
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        } finally {
+            closeConn();
+        }
     }
 
 
