@@ -14,8 +14,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class OuterLayerController {
@@ -25,16 +23,11 @@ public class OuterLayerController {
     private Parent root;
 
     private Map<Integer, String> teams_map;
-
-    @FXML
-    Button tb1;
     @FXML
     VBox mainLayout;
 
     @FXML
     private void initialize() throws IOException{
-        System.out.println("INITIALIZE METHOD CALLED");
-//        Map<Integer, String> teams_map;
         try {
             teams_map = JavaPostgreSQL.queryTeams();
         } catch (SQLException e) {
@@ -69,8 +62,6 @@ public class OuterLayerController {
 
         mainLayout.getChildren().add(hboxItems);
     }
-
-
 
     private void CreateTeamScene(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/CreateTeamScene.fxml"));

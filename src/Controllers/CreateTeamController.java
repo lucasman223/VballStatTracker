@@ -23,8 +23,6 @@ public class CreateTeamController {
     TextField teamNameTF;
 
     public void goBack(ActionEvent event) throws IOException {
-        System.out.println("go back!");
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/OuterLayer.fxml"));
         root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -35,9 +33,7 @@ public class CreateTeamController {
     }
 
     public void addTeam(ActionEvent event) throws IOException {
-        //TODO check if teamNameTF is null if not dont add anything
         if (teamNameTF.getText() != "") {
-            System.out.println("add team!");
             System.out.println(teamNameTF.getText());
 
             try {
@@ -54,7 +50,7 @@ public class CreateTeamController {
             stage.setScene(scene);
             stage.show();
         } else {
-            System.out.println("team name field empty!");
+            System.out.println("Invalid parameter: team name field empty");
         }
 
     }

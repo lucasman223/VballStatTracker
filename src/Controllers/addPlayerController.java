@@ -26,12 +26,9 @@ public class addPlayerController {
     TextField numTF;
 
     public void initialize() throws IOException, SQLException {
-        System.out.println("INITIALIZE ADD PLAYER ");
         teamText.setText(JavaPostgreSQL.getCurTeamName());
     }
     public void goBack(ActionEvent event) throws IOException {
-        System.out.println("go back!");
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/EditTeamScene.fxml"));
         root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -48,21 +45,17 @@ public class addPlayerController {
 
         String isNum = numTF.getText();
 
-        if (isNum.matches("-?\\d+")) {
-            System.out.println("a  nnum");
-        }
-        else {
-            System.out.println("NOT NUM");
-            return;
-        }
 
 
         if (nameTF.getText() != "" && numTF.getText() != "") {
-            System.out.println("adding player");
+            if (!isNum.matches("-?\\d+")) {
+                System.out.println("Invalid parameter: invalid number");
+                return;
+            }
             String name = nameTF.getText();
             int num = Integer.parseInt(numTF.getText());
             if (num < 0 || num > 100) {
-                System.out.println("TOO BIG OR TOO SMALl");
+                System.out.println("Invalid parameter: enter a number between 0-99");
                 return;
             }
 
@@ -76,6 +69,9 @@ public class addPlayerController {
 
             nameTF.clear();
             numTF.clear();
+        }
+        else {
+            System.out.println("Invalid parameters: both fields should be filled");
         }
 
 

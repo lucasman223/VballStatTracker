@@ -12,7 +12,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -27,7 +26,6 @@ public class EditTeamSceneController {
     TableView playerList = new TableView<Player>();
 
     public void initialize() throws IOException, SQLException {
-        System.out.println("INITIALIZE EDIT TEAM METHOD CALLED");
         String curTeam = JavaPostgreSQL.getCurTeamName();
         teamName.setText(curTeam);
 
@@ -41,15 +39,12 @@ public class EditTeamSceneController {
         playerList.getColumns().add(nameCol);
 
         playerList.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-//        playerList.getItems().add(new Player(4, "Lucas"));
-//        playerList.getItems().add(new Player(5, "Faeth"));
         JavaPostgreSQL.queryTeamPlayers(playerList);
+
+        playerList.setSelectionModel(null);
     }
 
     public void goBack(ActionEvent event) throws IOException {
-        System.out.println("go back!");
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/TeamScene.fxml"));
         root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -60,7 +55,6 @@ public class EditTeamSceneController {
     }
 
     public void teamSettingsScene(ActionEvent event) throws IOException {
-        System.out.println("go to team settings");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/TeamSettings.fxml"));
         root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -71,8 +65,6 @@ public class EditTeamSceneController {
     }
 
     public void addPlayerScene(ActionEvent event) throws IOException {
-        System.out.println("add player!");
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/addPlayerScene.fxml"));
         root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
