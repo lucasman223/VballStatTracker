@@ -21,6 +21,7 @@ public class JavaPostgreSQL {
     private static int curEventID;
     private static int curPlayerID;
     private static String curTeamName;
+    private static String curEventName;
 
     public static int getCurTeamID() {
         return curTeamID;
@@ -28,9 +29,15 @@ public class JavaPostgreSQL {
     public static String getCurTeamName() {
         return curTeamName;
     }
+    public static String getCurEventName() {
+        return curEventName;
+    }
 
-    public static void setCurEventID(int eventID) {
+    public static void setCurEventIDs(int eventID, String eventName) {
+        System.out.println("SETTING CUR EVENT ID: " + eventID);
+        System.out.println("SETTING CUR EVENT NAME: " + eventName);
         curEventID = eventID;
+        curEventName = eventName;
     }
 
     public static void setCurPlayerID(int playerID) {
@@ -65,6 +72,25 @@ public class JavaPostgreSQL {
             pst.executeUpdate();
 
             System.out.println("INSERT TEAM SUCCESS");
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        } finally {
+            closeConn();
+        }
+    }
+
+    public static void writeEventToDB(String event) throws SQLException{
+        try {
+            createConn();
+            String query = "INSERT INTO events (team_id, event_name) VALUES (?, ?)";
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, curTeamID);
+            pst.setString(2, event);
+
+            pst.executeUpdate();
+
+            System.out.println("INSERT EVENT SUCCESS");
         } catch (SQLException e) {
             Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
             lgr.log(Level.SEVERE, e.getMessage(), e);
@@ -197,6 +223,29 @@ public class JavaPostgreSQL {
         } finally {
             closeConn();
         }
+    }
+
+    public static Map<Integer, String> queryEvents() throws SQLException {
+        createConn();
+        String query = "SELECT team_id, event_name FROM events WHERE team_id = ?::int";
+        Map<Integer, String> events_map = new HashMap<Integer, String>();
+
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+            pst.setInt(1, curTeamID);
+            ResultSet rs = pst.executeQuery();
+
+            System.out.println("QUERY EVENTS SUCCESS");
+            while(rs.next()) {
+                events_map.put(rs.getInt(1), rs.getString(2));
+            }
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        }
+
+        closeConn();
+
+        return events_map;
     }
 
 
