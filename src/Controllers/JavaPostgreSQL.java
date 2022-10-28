@@ -45,6 +45,10 @@ public class JavaPostgreSQL {
         curPlayerID = playerID;
     }
 
+    public static void setCurTeamName(String name) {
+        curTeamName = name;
+    }
+
     private static void createConn() throws SQLException {
         con = DriverManager.getConnection(url, user, pass);
     }
@@ -94,9 +98,24 @@ public class JavaPostgreSQL {
         System.out.println("ID OF TEAM GETTING DELETED");
         System.out.println(String.valueOf(curTeamID));
         createConn();
-        String query = "DELETE FROM teams WHERE team_id = ?::int";
 
-        try (PreparedStatement pst = con.prepareStatement(query)) {
+        String query1 = "DELETE FROM players WHERE team_id = ?::int";
+        try (PreparedStatement pst = con.prepareStatement(query1)) {
+
+            pst.setInt(1, curTeamID);
+
+            pst.executeUpdate();
+            System.out.println("DELETE PLAYERS ON TEAM");
+
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        }
+
+
+        String query2 = "DELETE FROM teams WHERE team_id = ?::int";
+
+        try (PreparedStatement pst = con.prepareStatement(query2)) {
 
             pst.setInt(1, curTeamID);
 
@@ -113,7 +132,7 @@ public class JavaPostgreSQL {
         System.out.println("QUERY TEAM PLAYERS");
 
         createConn();
-        String query = "SELECT number, player_name FROM players WHERE team_id = ?::int";
+        String query = "SELECT number, player_name, player_id FROM players WHERE team_id = ?::int";
 
         try (PreparedStatement pst = con.prepareStatement(query)) {
             pst.setInt(1, curTeamID);
@@ -122,8 +141,9 @@ public class JavaPostgreSQL {
             while(rs.next()) {
                 int num = rs.getInt(1);
                 String name = rs.getString(2);
+                int pID = rs.getInt(3);
 
-                Player p = new Player(num, name);
+                Player p = new Player(num, name, pID);
                 playerList.getItems().add(p);
             }
         } catch (SQLException e) {
@@ -151,6 +171,45 @@ public class JavaPostgreSQL {
             Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
             lgr.log(Level.SEVERE, e.getMessage(), e);
         }
+    }
+
+    public static void deletePlayer(int player_id) throws SQLException {
+        System.out.println("PLAYER GETTING DELETED");
+        System.out.println(player_id);
+        createConn();
+
+        String query = "DELETE FROM players WHERE player_id = ?::int";
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+
+            pst.setInt(1, player_id);
+
+            pst.executeUpdate();
+            System.out.println("DELETE PLAYER");
+
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        }
+    }
+
+    public static void alterTeamNameDB(String newTeamName) {
+        System.out.println("ALTER TEAM NAME");
+
+        String query = "UPDATE teams SET team_name = ? WHERE team_id = ?::int";
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+
+            pst.setString(1, newTeamName);
+            pst.setInt(2, curTeamID);
+
+            pst.executeUpdate();
+            System.out.println("ALTER TEAM NAME COMPLETE");
+
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        }
+        setCurTeamName(newTeamName);
+
     }
 
 

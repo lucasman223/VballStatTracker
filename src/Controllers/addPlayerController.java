@@ -42,22 +42,43 @@ public class addPlayerController {
     }
 
     public void addPlayer(ActionEvent event) throws IOException {
-        System.out.println("adding player");
-        //TODO make sure arguments are correct
 
-        String name = nameTF.getText();
-        int num = Integer.parseInt(numTF.getText());
+        //TODO update code to be conventional
+        //TODO add an alert to show that fields were invalid
 
-        try {
-            JavaPostgreSQL.writePlayerToDB(num, name);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        String isNum = numTF.getText();
+
+        if (isNum.matches("-?\\d+")) {
+            System.out.println("a  nnum");
+        }
+        else {
+            System.out.println("NOT NUM");
+            return;
         }
 
-        //TODO alert user that player was added
 
-        nameTF.clear();
-        numTF.clear();
+        if (nameTF.getText() != "" && numTF.getText() != "") {
+            System.out.println("adding player");
+            String name = nameTF.getText();
+            int num = Integer.parseInt(numTF.getText());
+            if (num < 0 || num > 100) {
+                System.out.println("TOO BIG OR TOO SMALl");
+                return;
+            }
+
+            try {
+                JavaPostgreSQL.writePlayerToDB(num, name);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+            //TODO alert user that player was added
+
+            nameTF.clear();
+            numTF.clear();
+        }
+
+
     }
 
 

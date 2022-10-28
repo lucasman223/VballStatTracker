@@ -20,8 +20,6 @@ public class CreateTeamController {
     @FXML
     Button addButton;
     @FXML
-    Button backButton;
-    @FXML
     TextField teamNameTF;
 
     public void goBack(ActionEvent event) throws IOException {
@@ -37,21 +35,27 @@ public class CreateTeamController {
     }
 
     public void addTeam(ActionEvent event) throws IOException {
-        System.out.println("add team!");
-        System.out.println(teamNameTF.getText());
+        //TODO check if teamNameTF is null if not dont add anything
+        if (teamNameTF.getText() != "") {
+            System.out.println("add team!");
+            System.out.println(teamNameTF.getText());
 
-        try {
-            JavaPostgreSQL.writeTeamToDB(teamNameTF.getText());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            try {
+                JavaPostgreSQL.writeTeamToDB(teamNameTF.getText());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/OuterLayer.fxml"));
+            root = loader.load();
+            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            scene.getStylesheets().add("/Resources/style.css");
+            stage.setScene(scene);
+            stage.show();
+        } else {
+            System.out.println("team name field empty!");
         }
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/OuterLayer.fxml"));
-        root = loader.load();
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        scene.getStylesheets().add("/Resources/style.css");
-        stage.setScene(scene);
-        stage.show();
     }
 }

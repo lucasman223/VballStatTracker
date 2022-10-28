@@ -18,7 +18,7 @@
          <children>
             <VBox alignment="CENTER" prefHeight="100.0" prefWidth="265.0">
                <children>
-                  <Button mnemonicParsing="false" text="Settings" />
+                  <Button mnemonicParsing="false" onAction="#teamSettingsScene" text="Settings" />
                   <Button mnemonicParsing="false" onAction="#addPlayerScene" text="Add Players" />
                </children>
             </VBox>

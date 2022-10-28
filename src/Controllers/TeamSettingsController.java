@@ -8,29 +8,33 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-
+import javax.swing.*;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class EditTeamSceneController {
+public class TeamSettingsController {
     private Stage stage;
     private Scene scene;
     private Parent root;
-
     @FXML
     Text teamName;
+
     @FXML
     TableView playerList = new TableView<Player>();
+    @FXML
+    TextField changeNameTF;
 
     public void initialize() throws IOException, SQLException {
-        System.out.println("INITIALIZE EDIT TEAM METHOD CALLED");
+        System.out.println("INITIALIZE SETTINGS METHOD CALLED");
         String curTeam = JavaPostgreSQL.getCurTeamName();
         teamName.setText(curTeam);
 
+        //TODO initialize tableview
         TableColumn numberCol = new TableColumn<Player, Integer>("Number");
         numberCol.setCellValueFactory(new PropertyValueFactory<Player, Integer>("number"));
 
@@ -42,15 +46,14 @@ public class EditTeamSceneController {
 
         playerList.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-//        playerList.getItems().add(new Player(4, "Lucas"));
-//        playerList.getItems().add(new Player(5, "Faeth"));
         JavaPostgreSQL.queryTeamPlayers(playerList);
+
     }
 
     public void goBack(ActionEvent event) throws IOException {
         System.out.println("go back!");
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/TeamScene.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/EditTeamScene.fxml"));
         root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -59,9 +62,13 @@ public class EditTeamSceneController {
         stage.show();
     }
 
-    public void teamSettingsScene(ActionEvent event) throws IOException {
-        System.out.println("go to team settings");
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/TeamSettings.fxml"));
+    public void saveSettings(ActionEvent event) throws IOException {
+        System.out.println("save settings!");
+        if (changeNameTF.getText() != "") {
+            JavaPostgreSQL.alterTeamNameDB(changeNameTF.getText());
+        }
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/EditTeamScene.fxml"));
         root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -70,15 +77,20 @@ public class EditTeamSceneController {
         stage.show();
     }
 
-    public void addPlayerScene(ActionEvent event) throws IOException {
-        System.out.println("add player!");
+    public void deleteCol(ActionEvent event) throws IOException, SQLException {
+        //TODO check if any table row was selected if not dont delete
+        //Temporary solution, should prob find a better one
+        Player p;
+        try {
+            p = (Player) playerList.getItems().get(playerList.getSelectionModel().getSelectedIndex());
+            System.out.println(p.getPlayer_id());
+            System.out.println("Deleting col from table");
+            JavaPostgreSQL.deletePlayer(p.getPlayer_id());
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/addPlayerScene.fxml"));
-        root = loader.load();
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        scene.getStylesheets().add("/Resources/style.css");
-        stage.setScene(scene);
-        stage.show();
+            playerList.getItems().removeAll(playerList.getSelectionModel().getSelectedItem());
+        } catch (Exception e){
+            System.out.println(e);
+        }
+
     }
 }
