@@ -17,7 +17,7 @@
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
             <Button fx:id="editTeamButton" mnemonicParsing="false" onAction="#editTeam" text="Edit Team" />
-            <Button fx:id="trackStatsButton" mnemonicParsing="false" text="Track Stats" />
+            <Button mnemonicParsing="false" onAction="#eventScene" text="Track Stats" />
          </children>
       </HBox>
    </children>

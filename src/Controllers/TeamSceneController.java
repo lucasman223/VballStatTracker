@@ -68,6 +68,15 @@ public class TeamSceneController {
              stage.show();
         }
     }
+    public void eventScene (ActionEvent event) throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/EventsScene.fxml"));
+        root = loader.load();
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        scene.getStylesheets().add("/Resources/style.css");
+        stage.setScene(scene);
+        stage.show();
+    }
 
 
 
