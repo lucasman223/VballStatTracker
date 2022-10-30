@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.swing.*;
@@ -20,6 +21,13 @@ public class CreateEventController {
 
     @FXML
     TextField eventNameTF;
+    @FXML
+    Text teamName;
+
+   public void initialize() {
+       String curTeam = JavaPostgreSQL.getCurTeamName();
+       teamName.setText(curTeam);
+   }
 
     public void goBack(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/EventsScene.fxml"));

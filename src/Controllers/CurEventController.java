@@ -60,4 +60,17 @@ public class CurEventController {
             stage.show();
         }
     }
+
+    public void goActionScene(ActionEvent event) throws IOException {
+        //TODO need to know if player list and action button list are populated
+
+        //if player_list and action_list not populated
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/InitActionPlayersScene.fxml"));
+        root = loader.load();
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        scene.getStylesheets().add("/Resources/style.css");
+        stage.setScene(scene);
+        stage.show();
+    }
 }

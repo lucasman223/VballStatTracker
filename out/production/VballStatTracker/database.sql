@@ -98,16 +98,14 @@ INSERT INTO statistics (event_id, player_id, action_type_id) VALUES (1, 4, 7);
 INSERT INTO statistics (event_id, player_id, action_type_id) VALUES (1, 3, 5);
 INSERT INTO statistics (event_id, player_id, action_type_id) VALUES (1, 4, 4);
 
-
-
-
-
-
-
-
-
-
-
+/*
+    query outputs columns number, player_name, player_id, selected where selected is > 0 if in event, < -1 if not in event
+*/
+SELECT p.number, p.player_name, p.player_id, coalesce(pl.event_id, -1) AS selected
+FROM players p
+LEFT JOIN (SELECT * FROM player_list WHERE event_id = 2) pl
+ON p.player_id = pl.player_id
+WHERE p.team_id = 2;
 
 
 

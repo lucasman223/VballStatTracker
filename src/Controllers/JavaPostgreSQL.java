@@ -1,5 +1,7 @@
 package Controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 
 import java.sql.*;
@@ -144,8 +146,13 @@ public class JavaPostgreSQL {
         }
     }
 
-    public static void queryTeamPlayers(TableView playerList) throws SQLException {
+    public static ObservableList<Player> queryTeamPlayers() throws SQLException {
+        //TODO update to have an observable list
+        //TODO update function to return observable list
         createConn();
+
+        ObservableList<Player> data = FXCollections.observableArrayList();
+
         String query = "SELECT number, player_name, player_id FROM players WHERE team_id = ?::int";
 
         try (PreparedStatement pst = con.prepareStatement(query)) {
@@ -158,14 +165,55 @@ public class JavaPostgreSQL {
                 String name = rs.getString(2);
                 int pID = rs.getInt(3);
 
-                Player p = new Player(num, name, pID);
-                playerList.getItems().add(p);
+                Player p = new Player(num, name, pID, false);
+                data.add(p);
             }
         } catch (SQLException e) {
             Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
             lgr.log(Level.SEVERE, e.getMessage(), e);
         }
         closeConn();
+
+        return data;
+    }
+
+    public static ObservableList<Player> queryEventPlayerList() throws SQLException {
+        createConn();
+
+        ObservableList<Player> data = FXCollections.observableArrayList();
+
+        String query = "SELECT p.number, p.player_name, p.player_id, coalesce(pl.event_id, -1) AS selected FROM players p LEFT JOIN (SELECT * FROM player_list WHERE event_id = ?::int) pl ON p.player_id = pl.player_id WHERE p.team_id = ?::int";
+
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+            pst.setInt(1, curEventID);
+            pst.setInt(2, curTeamID);
+            ResultSet rs = pst.executeQuery();
+
+            System.out.println("QUERY EVENT PLAYERS SUCCESS");
+            while(rs.next()) {
+                int num = rs.getInt(1);
+                String name = rs.getString(2);
+                int pID = rs.getInt(3);
+
+                int selected = rs.getInt(4);
+                boolean b;
+                if (selected != -1) {
+                    b = true;
+                }
+                else {
+                    b = false;
+                }
+
+                Player p = new Player(num, name, pID, b);
+                data.add(p);
+            }
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        }
+        closeConn();
+
+        return data;
     }
 
     public static void writePlayerToDB(int num, String name) throws SQLException {
@@ -250,10 +298,18 @@ public class JavaPostgreSQL {
     }
 
     public static void deleteEvent() throws SQLException {
+        //TODO delete players from player_list with event inside
+        //TODO will need to delete other things too
         try {
             createConn();
-            String query = "DELETE FROM events WHERE event_id = ?::int";
-            PreparedStatement pst = con.prepareStatement(query);
+            String query1 = "DELETE FROM player_list WHERE event_id = ?::int";
+            PreparedStatement pst = con.prepareStatement(query1);
+            pst.setInt(1, curEventID);
+
+            pst.executeUpdate();
+
+            String query2 = "DELETE FROM events WHERE event_id = ?::int";
+            pst = con.prepareStatement(query2);
             pst.setInt(1, curEventID);
 
             pst.executeUpdate();
@@ -267,5 +323,8 @@ public class JavaPostgreSQL {
         }
     }
 
+    public static void queryTeamPlayers2(ObservableList<Player> playerList) throws SQLException {
+
+    }
 
 }
