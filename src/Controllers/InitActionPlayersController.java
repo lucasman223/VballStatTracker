@@ -70,8 +70,7 @@ public class InitActionPlayersController {
     }
 
     public void initActionButtonsScene(ActionEvent event) throws IOException, SQLException {
-        //TODO when clicked calculate which checkBoxes are selected and make a list
-        //TODO call the alterEventPlayerList function
+        //TODO check if none were selected if so one must be selected
         JavaPostgreSQL.alterEventPlayerList(data);
 
 

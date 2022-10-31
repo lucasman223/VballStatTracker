@@ -24,6 +24,7 @@ public class JavaPostgreSQL {
     private static int curPlayerID;
     private static String curTeamName;
     private static String curEventName;
+    private static String curPlayerString;
 
     public static int getCurTeamID() {
         return curTeamID;
@@ -34,6 +35,9 @@ public class JavaPostgreSQL {
     public static String getCurEventName() {
         return curEventName;
     }
+    public static String getCurPlayerString() {
+        return curPlayerString;
+    }
 
     public static void setCurEventIDs(int eventID, String eventName) {
         System.out.println("SETTING CUR EVENT ID: " + eventID);
@@ -42,8 +46,12 @@ public class JavaPostgreSQL {
         curEventName = eventName;
     }
 
-    public static void setCurPlayerID(int playerID) {
+    public static void setCurPlayerIDs(int playerID) throws SQLException {
+        System.out.println("SETTING CUR PLAYER ID: " + playerID);
         curPlayerID = playerID;
+        curPlayerString = queryPlayer();
+        System.out.println("SETTING CUR PLAYER NAME: " + curPlayerString);
+
     }
 
     public static void setCurTeamName(String name) {
@@ -80,6 +88,32 @@ public class JavaPostgreSQL {
         } finally {
             closeConn();
         }
+    }
+
+    public static String queryPlayer() throws SQLException {
+        createConn();
+        String query = "SELECT player_name, number FROM players WHERE player_id = ?::int";
+        String playerString = "";
+
+        try {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, curPlayerID);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                playerString = rs.getString(1) + " " + rs.getInt(2);
+            }
+
+            rs.close();
+
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        }
+
+        closeConn();
+
+        return playerString;
     }
 
     public static void writeEventToDB(String event) throws SQLException{
@@ -125,17 +159,30 @@ public class JavaPostgreSQL {
         //TODO DELETE EVENTS associated with team
         try {
             createConn();
-            String query1 = "DELETE FROM players WHERE team_id = ?::int";
-            PreparedStatement pst = con.prepareStatement(query1);
+
+            String query = "SELECT event_id FROM events WHERE team_id = ?::int";
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, curTeamID);
+            ResultSet rs = pst.executeQuery();
+            closeConn();
+
+            while (rs.next()) {
+                deleteEvent(rs.getInt(1));
+            }
+
+            createConn();
+            query = "DELETE FROM players WHERE team_id = ?::int";
+            pst = con.prepareStatement(query);
             pst.setInt(1, curTeamID);
 
             pst.executeUpdate();
 
-            String query2 = "DELETE FROM teams WHERE team_id = ?::int";
-            pst = con.prepareStatement(query2);
+            query = "DELETE FROM teams WHERE team_id = ?::int";
+            pst = con.prepareStatement(query);
             pst.setInt(1, curTeamID);
 
             pst.executeUpdate();
+
 
             System.out.println("DELETE TEAM SUCCESS");
         } catch (SQLException e) {
@@ -239,17 +286,34 @@ public class JavaPostgreSQL {
     public static void deletePlayer(int player_id) throws SQLException {
         try {
             createConn();
-            String query = "DELETE FROM players WHERE player_id = ?::int";
+            con.setAutoCommit(false);
+
+            String query = "DELETE FROM statistics WHERE player_id = ?::int";
             PreparedStatement pst = con.prepareStatement(query);
             pst.setInt(1, player_id);
 
             pst.executeUpdate();
+
+            query = "DELETE FROM player_list WHERE player_id = ?::int";
+            pst = con.prepareStatement(query);
+            pst.setInt(1, player_id);
+
+            pst.executeUpdate();
+
+            query = "DELETE FROM players WHERE player_id = ?::int";
+            pst = con.prepareStatement(query);
+            pst.setInt(1, player_id);
+
+            pst.executeUpdate();
+
+            con.commit();
 
             System.out.println("DELETE PLAYER SUCCESS");
         }  catch (SQLException e) {
             Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
             lgr.log(Level.SEVERE, e.getMessage(), e);
         } finally {
+            con.setAutoCommit(true);
             closeConn();
         }
     }
@@ -297,29 +361,48 @@ public class JavaPostgreSQL {
         return events_map;
     }
 
-    public static void deleteEvent() throws SQLException {
-        //TODO delete players from player_list with event inside
-        //TODO will need to delete other things too
+    public static void deleteEvent(int eventID) throws SQLException {
+        if (eventID == -1) {
+            eventID = curEventID; //if -1 arg given then use curEventID else use eventID
+        }
         try {
             createConn();
-            String query1 = "DELETE FROM player_list WHERE event_id = ?::int";
-            PreparedStatement pst = con.prepareStatement(query1);
-            pst.setInt(1, curEventID);
+            con.setAutoCommit(false);
+
+            String query = "DELETE FROM statistics WHERE event_id = ?::int";
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, eventID);
 
             pst.executeUpdate();
 
-            String query2 = "DELETE FROM events WHERE event_id = ?::int";
-            pst = con.prepareStatement(query2);
-            pst.setInt(1, curEventID);
+            query = "DELETE FROM action_list WHERE event_id = ?::int";
+            pst = con.prepareStatement(query);
+            pst.setInt(1, eventID);
 
             pst.executeUpdate();
+
+            query = "DELETE FROM player_list WHERE event_id = ?::int";
+            pst = con.prepareStatement(query);
+            pst.setInt(1, eventID);
+
+            pst.executeUpdate();
+
+            query = "DELETE FROM events WHERE event_id = ?::int";
+            pst = con.prepareStatement(query);
+            pst.setInt(1, eventID);
+
+            pst.executeUpdate();
+            con.commit();
 
             System.out.println("DELETE EVENT SUCCESS");
+
         } catch (SQLException e) {
             Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
             lgr.log(Level.SEVERE, e.getMessage(), e);
         } finally {
+            con.setAutoCommit(true);
             closeConn();
+
         }
     }
 
@@ -393,6 +476,38 @@ public class JavaPostgreSQL {
         }
     }
 
+    public static Map<Integer, String> queryPlayersList() throws SQLException {
+
+        createConn();
+        Map<Integer, String> players_map = new HashMap<Integer, String>();
+
+        String query = "SELECT pl.player_id, p.player_name \n" +
+                "FROM player_list pl \n" +
+                "JOIN players p ON pl.player_id = p.player_id \n" +
+                "WHERE pl.event_id = ?::int;";
+        try {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, curEventID);
+
+            ResultSet rs = pst.executeQuery();
+
+
+
+            while (rs.next()) {
+                players_map.put(rs.getInt(1), rs.getString(2));
+            }
+
+            rs.close();
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        }
+
+        closeConn();
+
+        return players_map;
+    }
+
     public static void alterEventActionList(ObservableList<Action> data) throws SQLException {
         //delete all actions with certain event id
         //given a list of selected actions add those to the action_list
@@ -433,7 +548,6 @@ public class JavaPostgreSQL {
             pst.setInt(1, curEventID);
             ResultSet rs = pst.executeQuery();
 
-            System.out.println("QUERY EVENTS SUCCESS");
             while(rs.next()) {
                 if (rs.getInt(1) == 0) {
                     return false;
@@ -459,6 +573,98 @@ public class JavaPostgreSQL {
         closeConn();
 
         return true;
+    }
+
+    public static ObservableList<Stat> queryStatsTimeline() throws SQLException {
+        createConn();
+
+        ObservableList<Stat> data = FXCollections.observableArrayList();
+
+        String query = "SELECT s.player_id, p.player_name, p.number, s.stat_id, s.action_type_id, atype.action_name \n" +
+                "FROM statistics s\n" +
+                "JOIN players p ON s.player_id = p.player_id\n" +
+                "JOIN action_type atype ON s.action_type_id = atype.action_type_id\n" +
+                "WHERE s.event_id = ?::int";
+
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+            pst.setInt(1, curEventID);
+            ResultSet rs = pst.executeQuery();
+            System.out.println( "!!!Cur event ID !!! " + curEventID);
+
+            System.out.println("QUERY STATS TIMELINE SUCCESS");
+            while(rs.next()) {
+                int player_id = rs.getInt(1);
+                String playerName = rs.getString(2);
+                int playerNum = rs.getInt(3);
+                Player p = new Player(playerNum, playerName, player_id, false);
+
+                int statID = rs.getInt(4);
+
+                int actionTypeID = rs.getInt(5);
+                String actionName = rs.getString(6);
+
+                Action a = new Action(actionTypeID, actionName, false);
+
+                Stat s = new Stat(p, a, statID);
+
+                data.add(s);
+            }
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        }
+        closeConn();
+
+        return data;
+    }
+
+    public static Map<Integer, String> queryActionList() throws SQLException {
+
+        createConn();
+        Map<Integer, String> action_map = new HashMap<Integer, String>();
+
+        String query = "SELECT al.action_type_id, atype.action_name \n" +
+                "FROM action_list al \n" +
+                "JOIN action_type atype ON al.action_type_id = atype.action_type_id \n" +
+                "WHERE al.event_id = ?;";
+        try {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, curEventID);
+
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                action_map.put(rs.getInt(1), rs.getString(2));
+            }
+
+            rs.close();
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        }
+
+        closeConn();
+
+        return action_map;
+    }
+    public static void writeStatToDB(int actionID) throws SQLException {
+        try {
+            createConn();
+            String query = "INSERT INTO statistics (event_id, player_id, action_type_id) VALUES (?::int, ?::int, ?::int);";
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, curEventID);
+            pst.setInt(2, curPlayerID);
+            pst.setInt(3, actionID);
+
+            pst.executeUpdate();
+
+            System.out.println("INSERT STAT SUCCESS");
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        } finally {
+            closeConn();
+        }
     }
 
 }

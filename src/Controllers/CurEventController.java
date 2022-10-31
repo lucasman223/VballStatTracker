@@ -49,7 +49,7 @@ public class CurEventController {
         Optional<ButtonType> result = a.showAndWait();
 
         if (result.get() == ButtonType.OK) {
-            JavaPostgreSQL.deleteEvent();
+            JavaPostgreSQL.deleteEvent(-1);
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/EventsScene.fxml"));
             root = loader.load();

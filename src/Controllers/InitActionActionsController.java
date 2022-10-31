@@ -63,6 +63,7 @@ public class InitActionActionsController {
     }
 
     public void goTrackStats(ActionEvent event) throws SQLException, IOException {
+        //TODO check if none were selected if so one must be selected
         JavaPostgreSQL.alterEventActionList(data);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/TrackStatsScene.fxml"));

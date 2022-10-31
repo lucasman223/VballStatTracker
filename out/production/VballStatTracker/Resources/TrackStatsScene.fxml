@@ -11,18 +11,14 @@
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
             <Button mnemonicParsing="false" onAction="#goBack" text="Back" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name of Team + Event" />
-            <Button mnemonicParsing="false" text="Edit" />
+            <Text fx:id="teamNameAndEvent" strokeType="OUTSIDE" strokeWidth="0.0" text="Name of Team + Event" />
+            <Button mnemonicParsing="false" onAction="#goInitPlayerList" text="Edit" />
          </children>
       </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0">
+      <HBox prefHeight="300.0" prefWidth="600.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Button mnemonicParsing="false" text="Temp Button" />
-               </children>
-            </HBox>
-            <TableView prefHeight="200.0" prefWidth="200.0" />
+            <VBox fx:id="vBox" prefHeight="300.0" prefWidth="479.0" />
+            <TableView fx:id="reportTable" prefHeight="300.0" prefWidth="213.0" />
          </children>
       </HBox>
    </children>

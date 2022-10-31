@@ -115,9 +115,73 @@ FROM action_type atype
 LEFT JOIN (SELECT * FROM action_list WHERE event_id = 1) al
 ON atype.action_type_id = al.action_type_id;
 
+/*
+    query outputs player_name, player_number, player_id, stat_id, action_type_id, action_name
+*/
+SELECT s.player_id, p.player_name, p.number, s.stat_id, s.action_type_id, atype.action_name
+FROM statistics s
+JOIN players p ON s.player_id = p.player_id
+JOIN action_type atype ON s.action_type_id = atype.action_type_id
+WHERE s.event_id = 9;
+/*
+    query outputs player_id, player_name from player_list given an event id
+*/
+SELECT pl.player_id, p.player_name
+FROM player_list pl
+JOIN players p ON pl.player_id = p.player_id
+WHERE pl.event_id = 2;
+
+/*
+    query outputs action_type_id, action_name from action_list given an event id
+*/
+SELECT al.action_type_id, atype.action_name
+FROM action_list al
+JOIN action_type atype ON al.action_type_id = atype.action_type_id
+WHERE al.event_id = 1;
+
+/*
+    deleting a team steps:
+    delete all statistics associated with event in team
+    delete all action_list items associated with event in team
+    delete all player_list items associated with event in team
+    delete all events associated with team
+    delete all players associated with team
+    delete team
+*/
+--in a for loop delete all events associated with teams
+SELECT event_id FROM events WHERE team_id = 4;
+--delete players from team
+DELETE FROM players WHERE team_id = 4;
+--delete team
+DELETE FROM teams WHERE team_id = 4;
 
 
+/*
+    deleting an event:
+    delete all statistics associated with event
+    delete all action_list items associated with event
+    delete all player_list items associated with event
+    delete event
+*/
+BEGIN TRANSACTION;
+    DELETE FROM statistics WHERE event_id = 9;
+    DELETE FROM action_list WHERE event_id = 9;
+    DELETE FROM player_list WHERE event_id = 9;
+    DELETE FROM events WHERE event_id = 9;
+END TRANSACTION;
 
+/*
+    deleting a player:
+    delete statistics associated with player
+    delete player_list items associated with player
+    delete player from players
+*/
+
+BEGIN TRANSACTION;
+    DELETE FROM statistics WHERE player_id = 4;
+    DELETE FROM player_list WHERE player_id = 4;
+    DELETE FROM players WHERE player_id = 4;
+END TRANSACTION;
 
 
 
