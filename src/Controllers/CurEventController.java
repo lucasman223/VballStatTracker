@@ -61,11 +61,22 @@ public class CurEventController {
         }
     }
 
-    public void goActionScene(ActionEvent event) throws IOException {
+    public void goActionScene(ActionEvent event) throws IOException, SQLException {
         //TODO need to know if player list and action button list are populated
+        FXMLLoader loader;
+
+        if (JavaPostgreSQL.isEventInitialized()) {
+            System.out.println("EVENT INTITALIZED");
+
+            loader = new FXMLLoader(getClass().getResource("/Resources/TrackStatsScene.fxml"));
+        }
+        else {
+            System.out.println("EVENT NOT INITIALZIED");
+
+            loader = new FXMLLoader(getClass().getResource("/Resources/InitActionPlayersScene.fxml"));
+        }
 
         //if player_list and action_list not populated
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/InitActionPlayersScene.fxml"));
         root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);

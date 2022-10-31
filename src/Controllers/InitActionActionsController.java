@@ -1,6 +1,5 @@
 package Controllers;
 
-import javafx.beans.property.BooleanProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,7 +18,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class InitActionPlayersController {
+public class InitActionActionsController {
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -27,40 +26,34 @@ public class InitActionPlayersController {
     @FXML
     Text teamNameAndEvent;
     @FXML
-    TableView playerList = new TableView<Player>();
+    TableView actionList = new TableView<Action>();
 
-    ObservableList<Player> data;
-
-
+    ObservableList<Action> data;
     public void initialize() throws SQLException {
         String curTeam = JavaPostgreSQL.getCurTeamName();
         String curEvent = JavaPostgreSQL.getCurEventName();
         teamNameAndEvent.setText(curTeam + "- " + curEvent);
 
-        data = JavaPostgreSQL.queryEventPlayerList();
+        data = JavaPostgreSQL.queryActions();
 
-        TableColumn<Player, String> numberCol = new TableColumn<>("Number");
-        numberCol.setCellValueFactory(new PropertyValueFactory<>("number"));
+        TableColumn<Action, String> actionCol = new TableColumn<>("Action");
+        actionCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 
-        TableColumn<Player, String> nameCol = new TableColumn<>("Name");
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-
-        TableColumn<Player, Boolean> checkedCol = new TableColumn<>("Selected");
+        TableColumn<Action, Boolean> checkedCol = new TableColumn<>("Selected");
         checkedCol.setCellFactory(CheckBoxTableCell.forTableColumn(checkedCol));
         checkedCol.setCellValueFactory(cellData -> cellData.getValue().remarkProperty());
 
-        playerList.setItems(data);
 
-        playerList.getColumns().add(numberCol);
-        playerList.getColumns().add(nameCol);
-        playerList.getColumns().add(checkedCol);
+        actionList.setItems(data);
+        actionList.getColumns().add(actionCol);
+        actionList.getColumns().add(checkedCol);
 
-        playerList.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        playerList.setEditable(true);
+        actionList.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        actionList.setEditable(true);
     }
 
     public void goBack(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/CurEventScene.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/InitActionPlayersScene.fxml"));
         root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -69,18 +62,16 @@ public class InitActionPlayersController {
         stage.show();
     }
 
-    public void initActionButtonsScene(ActionEvent event) throws IOException, SQLException {
-        //TODO when clicked calculate which checkBoxes are selected and make a list
-        //TODO call the alterEventPlayerList function
-        JavaPostgreSQL.alterEventPlayerList(data);
+    public void goTrackStats(ActionEvent event) throws SQLException, IOException {
+        JavaPostgreSQL.alterEventActionList(data);
 
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/InitActionActionsScene.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/TrackStatsScene.fxml"));
         root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         scene.getStylesheets().add("/Resources/style.css");
         stage.setScene(scene);
         stage.show();
+
     }
 }

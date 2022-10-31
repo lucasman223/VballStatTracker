@@ -107,6 +107,14 @@ LEFT JOIN (SELECT * FROM player_list WHERE event_id = 2) pl
 ON p.player_id = pl.player_id
 WHERE p.team_id = 2;
 
+/*
+    query outputs action_type_id, action_name, selected where selected is > 0 if in event, -1 if not in event
+*/
+SELECT atype.action_type_id, atype.action_name, coalesce(al.event_id, -1) AS selected
+FROM action_type atype
+LEFT JOIN (SELECT * FROM action_list WHERE event_id = 1) al
+ON atype.action_type_id = al.action_type_id;
+
 
 
 
