@@ -16,10 +16,10 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button mnemonicParsing="false" text="Serving" />
-            <Button mnemonicParsing="false" text="Receiving" />
-            <Button mnemonicParsing="false" text="Attacking" />
-            <Button mnemonicParsing="false" text="Setting" />
+            <Button mnemonicParsing="false" onAction="#initServeTable" text="Serving" />
+            <Button mnemonicParsing="false" onAction="#initRecTable" text="Receiving" />
+            <Button mnemonicParsing="false" onAction="#initAttackTable" text="Attacking" />
+            <Button mnemonicParsing="false" onAction="#initSetTable" text="Setting" />
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="188.0" prefWidth="600.0">

@@ -37,7 +37,9 @@ public class Report {
 
         for (Stat s : statList) {
             if (s.getPlayer().getPlayer_id() == p.getPlayer_id()) {
-                switch(s.getStatID()) {
+                System.out.println(s.getAction().getActionId());
+                switch(s.getAction().getActionId()) {
+
                     case 1:
                         serveAttempts++;
                         serveAce++;
