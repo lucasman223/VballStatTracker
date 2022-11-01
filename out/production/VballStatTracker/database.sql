@@ -183,5 +183,14 @@ BEGIN TRANSACTION;
     DELETE FROM players WHERE player_id = 4;
 END TRANSACTION;
 
+/*
+    query outputs player_num, player_name, player_id, from player_list given an event_id
+*/
+
+SELECT p.number, p.player_name, pl.player_id
+FROM player_list pl
+JOIN players p ON p.player_id = pl.player_id
+WHERE pl.event_id = 1;
+
 
 

@@ -667,4 +667,83 @@ public class JavaPostgreSQL {
         }
     }
 
+    public static List<Stat> queryStatsList() throws SQLException {
+        createConn();
+
+        List<Stat> data = new ArrayList<Stat>();
+
+        String query = "SELECT s.player_id, p.player_name, p.number, s.stat_id, s.action_type_id, atype.action_name \n" +
+                "FROM statistics s\n" +
+                "JOIN players p ON s.player_id = p.player_id\n" +
+                "JOIN action_type atype ON s.action_type_id = atype.action_type_id\n" +
+                "WHERE s.event_id = ?::int";
+
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+            pst.setInt(1, curEventID);
+            ResultSet rs = pst.executeQuery();
+            System.out.println( "!!!Cur event ID !!! " + curEventID);
+
+            System.out.println("QUERY STATS TIMELINE SUCCESS");
+            while(rs.next()) {
+                int player_id = rs.getInt(1);
+                String playerName = rs.getString(2);
+                int playerNum = rs.getInt(3);
+                Player p = new Player(playerNum, playerName, player_id, false);
+
+                int statID = rs.getInt(4);
+
+                int actionTypeID = rs.getInt(5);
+                String actionName = rs.getString(6);
+
+                Action a = new Action(actionTypeID, actionName, false);
+
+                Stat s = new Stat(p, a, statID);
+
+                data.add(s);
+            }
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        }
+        closeConn();
+
+        return data;
+    }
+
+    public static List<Player> queryPlayersObjects() throws SQLException {
+
+        createConn();
+        List<Player> data = new ArrayList<Player>();
+
+        String query = "SELECT p.number, p.player_name, pl.player_id\n" +
+                        "FROM player_list pl\n" +
+                        "JOIN players p ON p.player_id = pl.player_id\n" +
+                        "WHERE pl.event_id = ?::int";
+        try {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, curEventID);
+
+            ResultSet rs = pst.executeQuery();
+
+
+
+            while (rs.next()) {
+                Player p = new Player(rs.getInt(1), rs.getString(2), rs.getInt(3), false);
+
+                data.add(p);
+            }
+
+            rs.close();
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        }
+
+        closeConn();
+
+        return data;
+    }
+
+
+
 }
