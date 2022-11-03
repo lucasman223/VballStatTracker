@@ -41,20 +41,7 @@ public class TrackStatsController {
         String curEvent = JavaPostgreSQL.getCurEventName();
         teamNameAndEvent.setText(curTeam + "- " + curEvent);
 
-        data = JavaPostgreSQL.queryStatsTimeline();
-
-        TableColumn<Stat, String> playerCol = new TableColumn<>("Player");
-        playerCol.setCellValueFactory(new PropertyValueFactory<>("playerString"));
-
-        TableColumn<Stat, String> actionCol = new TableColumn<>("Action");
-        actionCol.setCellValueFactory(new PropertyValueFactory<>("actionString"));
-
-        reportTable.setItems(data);
-
-        reportTable.getColumns().add(playerCol);
-        reportTable.getColumns().add(actionCol);
-        reportTable .setEditable(false);
-
+       initReportTable();
 
         players_map = JavaPostgreSQL.queryPlayersList();
         int totalAdded = 0;
@@ -120,6 +107,24 @@ public class TrackStatsController {
         }
     }
 
+    public void initReportTable() throws SQLException {
+        reportTable.getColumns().clear();
+
+        data = JavaPostgreSQL.queryStatsTimeline();
+
+        TableColumn<Stat, String> playerCol = new TableColumn<>("Player");
+        playerCol.setCellValueFactory(new PropertyValueFactory<>("playerString"));
+
+        TableColumn<Stat, String> actionCol = new TableColumn<>("Action");
+        actionCol.setCellValueFactory(new PropertyValueFactory<>("actionString"));
+
+        reportTable.setItems(data);
+
+        reportTable.getColumns().add(playerCol);
+        reportTable.getColumns().add(actionCol);
+        reportTable .setEditable(false);
+    }
+
     public void goBack(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/CurEventScene.fxml"));
         root = loader.load();
@@ -152,5 +157,10 @@ public class TrackStatsController {
         scene.getStylesheets().add("/Resources/style.css");
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void undoStat() throws SQLException {
+        JavaPostgreSQL.undoStat();
+        initReportTable();
     }
 }

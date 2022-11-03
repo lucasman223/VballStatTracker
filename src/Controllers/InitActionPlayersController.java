@@ -71,15 +71,26 @@ public class InitActionPlayersController {
 
     public void initActionButtonsScene(ActionEvent event) throws IOException, SQLException {
         //TODO check if none were selected if so one must be selected
-        JavaPostgreSQL.alterEventPlayerList(data);
+        boolean onePlayerSelected = false;
+        for (Player p : data) {
+            if (p.getRemark()) {
+                onePlayerSelected = true;
+            }
+        }
 
+        if (onePlayerSelected) {
+            JavaPostgreSQL.alterEventPlayerList(data);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/InitActionActionsScene.fxml"));
-        root = loader.load();
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        scene.getStylesheets().add("/Resources/style.css");
-        stage.setScene(scene);
-        stage.show();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Resources/InitActionActionsScene.fxml"));
+            root = loader.load();
+            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            scene.getStylesheets().add("/Resources/style.css");
+            stage.setScene(scene);
+            stage.show();
+        } else {
+            System.out.println("Argument error: choose at least one player to track");
+        }
+
     }
 }

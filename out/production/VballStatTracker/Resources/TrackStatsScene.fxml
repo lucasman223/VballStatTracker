@@ -13,6 +13,7 @@
             <Button mnemonicParsing="false" onAction="#goBack" text="Back" />
             <Text fx:id="teamNameAndEvent" strokeType="OUTSIDE" strokeWidth="0.0" text="Name of Team + Event" />
             <Button mnemonicParsing="false" onAction="#goInitPlayerList" text="Edit" />
+            <Button mnemonicParsing="false" onAction="#undoStat" text="Undo" />
          </children>
       </HBox>
       <HBox prefHeight="300.0" prefWidth="600.0">

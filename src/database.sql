@@ -122,7 +122,8 @@ SELECT s.player_id, p.player_name, p.number, s.stat_id, s.action_type_id, atype.
 FROM statistics s
 JOIN players p ON s.player_id = p.player_id
 JOIN action_type atype ON s.action_type_id = atype.action_type_id
-WHERE s.event_id = 9;
+WHERE s.event_id = 25
+ORDER BY s.stat_id;
 /*
     query outputs player_id, player_name from player_list given an event id
 */
@@ -192,5 +193,17 @@ FROM player_list pl
 JOIN players p ON p.player_id = pl.player_id
 WHERE pl.event_id = 1;
 
+/*
+    delete most recent stat from an event (highest stat_id)
+*/
+DELETE FROM statistics
+WHERE ctid IN (
+    SELECT ctid
+    FROM statistics
+    WHERE event_id = 25
+    ORDER BY stat_id DESC
+    LIMIT 1
+);
 
+SELECT CASE WHEN EXISTS (SELECT * FROM statistics WHERE event_id = ?::int LIMIT 1) THEN 1 ELSE 0 END
 

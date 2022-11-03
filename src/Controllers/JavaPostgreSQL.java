@@ -584,7 +584,8 @@ public class JavaPostgreSQL {
                 "FROM statistics s\n" +
                 "JOIN players p ON s.player_id = p.player_id\n" +
                 "JOIN action_type atype ON s.action_type_id = atype.action_type_id\n" +
-                "WHERE s.event_id = ?::int";
+                "WHERE s.event_id = ?::int\n" +
+                "ORDER BY s.stat_id";
 
         try (PreparedStatement pst = con.prepareStatement(query)) {
             pst.setInt(1, curEventID);
@@ -742,6 +743,49 @@ public class JavaPostgreSQL {
         closeConn();
 
         return data;
+    }
+
+    public static void undoStat() throws SQLException {
+        try {
+            createConn();
+
+            String testquery = "SELECT CASE WHEN EXISTS (SELECT * FROM statistics WHERE event_id = ?::int LIMIT 1) THEN 1 ELSE 0 END";
+
+            PreparedStatement pst = con.prepareStatement(testquery);
+            pst.setInt(1, curEventID);
+            ResultSet rs = pst.executeQuery();
+
+            System.out.println("QUERY IS EVENT INITALIZED SUCCESS");
+            boolean isStatExist = true;
+            while(rs.next()) {
+                if (rs.getInt(1) == 0) {
+                    isStatExist = false;
+                    System.out.println("STAT DOES NOT EXIST");
+                }
+            }
+
+            if (isStatExist) {
+                String query = "DELETE FROM statistics\n" +
+                        "WHERE ctid IN (\n" +
+                        "    SELECT ctid\n" +
+                        "    FROM statistics\n" +
+                        "    WHERE event_id = ?::int\n" +
+                        "    ORDER BY stat_id DESC\n" +
+                        "    LIMIT 1\n" +
+                        ")";
+                pst = con.prepareStatement(query);
+                pst.setInt(1, curEventID);
+
+                pst.executeUpdate();
+
+                System.out.println("DELETE STAT SUCCESS");
+            }
+        }  catch (SQLException e) {
+            Logger lgr = Logger.getLogger(JavaPostgreSQL.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        } finally {
+            closeConn();
+        }
     }
 
 
