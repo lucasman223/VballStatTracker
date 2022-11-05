@@ -98,20 +98,112 @@ INSERT INTO statistics (event_id, player_id, action_type_id) VALUES (1, 4, 7);
 INSERT INTO statistics (event_id, player_id, action_type_id) VALUES (1, 3, 5);
 INSERT INTO statistics (event_id, player_id, action_type_id) VALUES (1, 4, 4);
 
+/*
+    query outputs columns number, player_name, player_id, selected where selected is > 0 if in event, < -1 if not in event
+*/
+SELECT p.number, p.player_name, p.player_id, coalesce(pl.event_id, -1) AS selected
+FROM players p
+LEFT JOIN (SELECT * FROM player_list WHERE event_id = 2) pl
+ON p.player_id = pl.player_id
+WHERE p.team_id = 2;
+
+/*
+    query outputs action_type_id, action_name, selected where selected is > 0 if in event, -1 if not in event
+*/
+SELECT atype.action_type_id, atype.action_name, coalesce(al.event_id, -1) AS selected
+FROM action_type atype
+LEFT JOIN (SELECT * FROM action_list WHERE event_id = 1) al
+ON atype.action_type_id = al.action_type_id;
+
+/*
+    query outputs player_name, player_number, player_id, stat_id, action_type_id, action_name
+*/
+SELECT s.player_id, p.player_name, p.number, s.stat_id, s.action_type_id, atype.action_name
+FROM statistics s
+JOIN players p ON s.player_id = p.player_id
+JOIN action_type atype ON s.action_type_id = atype.action_type_id
+WHERE s.event_id = 29
+ORDER BY s.stat_id DESC;
+/*
+    query outputs player_id, player_name from player_list given an event id
+*/
+SELECT pl.player_id, p.player_name
+FROM player_list pl
+JOIN players p ON pl.player_id = p.player_id
+WHERE pl.event_id = 2;
+
+/*
+    query outputs action_type_id, action_name from action_list given an event id
+*/
+SELECT al.action_type_id, atype.action_name
+FROM action_list al
+JOIN action_type atype ON al.action_type_id = atype.action_type_id
+WHERE al.event_id = 1;
+
+/*
+    deleting a team steps:
+    delete all statistics associated with event in team
+    delete all action_list items associated with event in team
+    delete all player_list items associated with event in team
+    delete all events associated with team
+    delete all players associated with team
+    delete team
+*/
+--in a for loop delete all events associated with teams
+SELECT event_id FROM events WHERE team_id = 4;
+--delete players from team
+DELETE FROM players WHERE team_id = 4;
+--delete team
+DELETE FROM teams WHERE team_id = 4;
 
 
+/*
+    deleting an event:
+    delete all statistics associated with event
+    delete all action_list items associated with event
+    delete all player_list items associated with event
+    delete event
+*/
+BEGIN TRANSACTION;
+    DELETE FROM statistics WHERE event_id = 9;
+    DELETE FROM action_list WHERE event_id = 9;
+    DELETE FROM player_list WHERE event_id = 9;
+    DELETE FROM events WHERE event_id = 9;
+END TRANSACTION;
 
+/*
+    deleting a player:
+    delete statistics associated with player
+    delete player_list items associated with player
+    delete player from players
+*/
 
+BEGIN TRANSACTION;
+    DELETE FROM statistics WHERE player_id = 4;
+    DELETE FROM player_list WHERE player_id = 4;
+    DELETE FROM players WHERE player_id = 4;
+END TRANSACTION;
 
+/*
+    query outputs player_num, player_name, player_id, from player_list given an event_id
+*/
 
+SELECT p.number, p.player_name, pl.player_id
+FROM player_list pl
+JOIN players p ON p.player_id = pl.player_id
+WHERE pl.event_id = 1;
 
+/*
+    delete most recent stat from an event (highest stat_id)
+*/
+DELETE FROM statistics
+WHERE ctid IN (
+    SELECT ctid
+    FROM statistics
+    WHERE event_id = 25
+    ORDER BY stat_id DESC
+    LIMIT 1
+);
 
-
-
-
-
-
-
-
-
+SELECT CASE WHEN EXISTS (SELECT * FROM statistics WHERE event_id = ?::int LIMIT 1) THEN 1 ELSE 0 END
 

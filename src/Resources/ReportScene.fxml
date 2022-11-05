@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ReportController">
+   <children>
+      <HBox id="top-hbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="hbox">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="hbox">
+               <children>
+                  <Button id="small-button" mnemonicParsing="false" onAction="#goBack" text="Back" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="hbox">
+               <children>
+                  <Text id="title-text" fx:id="teamNameAndEvent" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Name of Team + Event" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" styleClass="hbox" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="hbox">
+         <children>
+            <Button mnemonicParsing="false" onAction="#initServeTable" text="Serving" />
+            <Button mnemonicParsing="false" onAction="#initRecTable" text="Receiving" />
+            <Button mnemonicParsing="false" onAction="#initAttackTable" text="Attacking" />
+            <Button mnemonicParsing="false" onAction="#initSetTable" text="Setting" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="201.0" prefWidth="600.0" styleClass="hbox">
+         <children>
+            <TableView fx:id="reportTable" prefHeight="162.0" prefWidth="465.0" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

@@ -9,20 +9,32 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.CreateTeamController">
    <children>
-      <HBox alignment="CENTER" prefHeight="170.0" prefWidth="600.0">
+      <HBox id="top-hbox" alignment="CENTER" prefHeight="62.0" prefWidth="600.0" style="-fx-pref-height: 100;" styleClass="hbox" stylesheets="@style.css">
          <children>
-            <Button fx:id="buttonBack" mnemonicParsing="false" onAction="#goBack" text="Back" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Team Add" textAlignment="CENTER" wrappingWidth="454.93671798706055">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Text>
-            <Button fx:id="addButton" mnemonicParsing="false" onAction="#addTeam" text="Add" />
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button id="small-button" fx:id="buttonBack" mnemonicParsing="false" onAction="#goBack" prefHeight="30.0" prefWidth="206.0" text="Back" />
+               </children>
+            </HBox>
+            <HBox id="top-middle-hbox" alignment="CENTER" maxWidth="229.0" prefHeight="69.0" prefWidth="229.0">
+               <children>
+                  <Text id="title-text" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Team Add" textAlignment="CENTER" wrappingWidth="112.93667602539062">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="170.0" prefWidth="189.0">
+               <children>
+                  <Button id="small-button" fx:id="addButton" mnemonicParsing="false" onAction="#addTeam" prefHeight="30.0" prefWidth="98.0" text="Add" />
+               </children>
+            </HBox>
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add Team: " wrappingWidth="69.6527099609375" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Add Team: " wrappingWidth="69.6527099609375" />
             <TextField fx:id="teamNameTF" />
          </children>
       </HBox>

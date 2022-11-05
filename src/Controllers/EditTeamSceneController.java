@@ -1,5 +1,6 @@
 package Controllers;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,23 +24,28 @@ public class EditTeamSceneController {
     @FXML
     Text teamName;
     @FXML
-    TableView playerList = new TableView<Player>();
+    TableView playerList = new TableView();
 
     public void initialize() throws IOException, SQLException {
         String curTeam = JavaPostgreSQL.getCurTeamName();
         teamName.setText(curTeam);
 
-        TableColumn numberCol = new TableColumn<Player, Integer>("Number");
-        numberCol.setCellValueFactory(new PropertyValueFactory<Player, Integer>("number"));
+        //TODO update because updated queryTeamPlayers
+        ObservableList<Player> data =  JavaPostgreSQL.queryTeamPlayers();
 
-        TableColumn nameCol = new TableColumn<Player, String>("Name");
-        nameCol.setCellValueFactory(new PropertyValueFactory<Player, String>("name"));
+        TableColumn<Player, String> numberCol = new TableColumn<>("Number");
+        numberCol.setCellValueFactory(new PropertyValueFactory<>("number"));
+
+        TableColumn<Player, String> nameCol = new TableColumn<>("Name");
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        playerList.setItems(data);
 
         playerList.getColumns().add(numberCol);
         playerList.getColumns().add(nameCol);
 
         playerList.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        JavaPostgreSQL.queryTeamPlayers(playerList);
+
 
         playerList.setSelectionModel(null);
     }

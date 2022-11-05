@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.TrackStatsController">
+   <children>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="hbox">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="215.0">
+               <children>
+                  <Button id="small-button" mnemonicParsing="false" onAction="#goBack" text="Back" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="69.0" prefWidth="253.0">
+               <children>
+                  <Text id="title-text" fx:id="teamNameAndEvent" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Name of Team + Event" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="69.0" prefWidth="249.0">
+               <children>
+                  <Button id="small-button" mnemonicParsing="false" onAction="#goInitPlayerList" text="Edit" />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+      <HBox prefHeight="300.0" prefWidth="600.0" styleClass="hbox">
+         <children>
+            <VBox fx:id="vBox" prefHeight="300.0" prefWidth="479.0" styleClass="vbox" />
+            <VBox alignment="CENTER" prefHeight="270.0" prefWidth="339.0" styleClass="vbox">
+               <children>
+                  <Button id="small-button" mnemonicParsing="false" onAction="#undoStat" text="Undo" />
+                  <TableView fx:id="reportTable" prefHeight="300.0" prefWidth="133.0" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>

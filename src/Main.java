@@ -24,6 +24,7 @@ public void start(Stage stage) throws IOException {
 
         stage.setTitle("Volleyball Statistics Tracker");
         stage.setScene(scene);
+        stage.setResizable(false); //may want to do this
         stage.show();
     }
 

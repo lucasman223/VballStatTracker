@@ -6,17 +6,26 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.EditTeamSceneController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.EditTeamSceneController">
    <children>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <HBox id="top-hbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="65.0" prefWidth="600.0" styleClass="hbox">
          <children>
-            <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" text="Back" />
-            <Text fx:id="teamName" strokeType="OUTSIDE" strokeWidth="0.0" text="Name of Team" textAlignment="CENTER" wrappingWidth="93.13671875" />
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button id="small-button" fx:id="backButton" mnemonicParsing="false" onAction="#goBack" prefHeight="30.0" prefWidth="140.0" text="Back" />
+               </children>
+            </HBox>
+            <HBox id="top-middle-hbox" alignment="CENTER" prefHeight="123.0" prefWidth="293.0">
+               <children>
+                  <Text id="title-text" fx:id="teamName" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Name of Team" textAlignment="CENTER" wrappingWidth="325.0" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" />
          </children>
       </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0">
+      <HBox prefHeight="418.0" prefWidth="600.0" styleClass="hbox">
          <children>
-            <VBox alignment="CENTER" prefHeight="100.0" prefWidth="265.0">
+            <VBox alignment="CENTER" prefHeight="100.0" prefWidth="265.0" styleClass="vbox">
                <children>
                   <Button mnemonicParsing="false" onAction="#teamSettingsScene" text="Settings" />
                   <Button mnemonicParsing="false" onAction="#addPlayerScene" text="Add Players" />
