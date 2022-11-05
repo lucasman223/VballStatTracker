@@ -6,20 +6,36 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.TrackStatsController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.TrackStatsController">
    <children>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="hbox">
          <children>
-            <Button mnemonicParsing="false" onAction="#goBack" text="Back" />
-            <Text fx:id="teamNameAndEvent" strokeType="OUTSIDE" strokeWidth="0.0" text="Name of Team + Event" />
-            <Button mnemonicParsing="false" onAction="#goInitPlayerList" text="Edit" />
-            <Button mnemonicParsing="false" onAction="#undoStat" text="Undo" />
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="215.0">
+               <children>
+                  <Button id="small-button" mnemonicParsing="false" onAction="#goBack" text="Back" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="69.0" prefWidth="253.0">
+               <children>
+                  <Text id="title-text" fx:id="teamNameAndEvent" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Name of Team + Event" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="69.0" prefWidth="249.0">
+               <children>
+                  <Button id="small-button" mnemonicParsing="false" onAction="#goInitPlayerList" text="Edit" />
+               </children>
+            </HBox>
          </children>
       </HBox>
-      <HBox prefHeight="300.0" prefWidth="600.0">
+      <HBox prefHeight="300.0" prefWidth="600.0" styleClass="hbox">
          <children>
-            <VBox fx:id="vBox" prefHeight="300.0" prefWidth="479.0" />
-            <TableView fx:id="reportTable" prefHeight="300.0" prefWidth="213.0" />
+            <VBox fx:id="vBox" prefHeight="300.0" prefWidth="479.0" styleClass="vbox" />
+            <VBox alignment="CENTER" prefHeight="270.0" prefWidth="339.0" styleClass="vbox">
+               <children>
+                  <Button id="small-button" mnemonicParsing="false" onAction="#undoStat" text="Undo" />
+                  <TableView fx:id="reportTable" prefHeight="300.0" prefWidth="133.0" />
+               </children>
+            </VBox>
          </children>
       </HBox>
    </children>

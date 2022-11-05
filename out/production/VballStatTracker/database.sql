@@ -122,8 +122,8 @@ SELECT s.player_id, p.player_name, p.number, s.stat_id, s.action_type_id, atype.
 FROM statistics s
 JOIN players p ON s.player_id = p.player_id
 JOIN action_type atype ON s.action_type_id = atype.action_type_id
-WHERE s.event_id = 25
-ORDER BY s.stat_id;
+WHERE s.event_id = 29
+ORDER BY s.stat_id DESC;
 /*
     query outputs player_id, player_name from player_list given an event id
 */

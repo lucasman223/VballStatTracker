@@ -40,6 +40,7 @@ public class EventsSceneController {
 
         HBox hboxItems = new HBox();
         hboxItems.setAlignment(Pos.CENTER);
+        hboxItems.getStyleClass().add("hbox");
 
         for (Map.Entry<Integer, String> me : events_map.entrySet()) {
             Button team_button = new Button(me.getValue());

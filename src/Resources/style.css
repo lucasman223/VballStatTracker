@@ -3,22 +3,69 @@
 
 
 * {
-   -fx-main_base: #e1b382;
-   -fx-main_accent: #ffaaab;
+   -fx-main_base: #FFFDE7;
+   -fx-main_accent: #bee0e2;
    -fx-font-family: 'Quicksand', sans-serif;
 }
 
 .root {
-
     -fx-background-color: -fx-main_base;
-
 }
 
+/* button css */
 .button {
-    -fx-padding: 10px;
-    -fx-border-insets: 10px;
-    -fx-background-insets: 10px;
-    -fx-pref-width: 100px;
-    -fx-pref-height: 100px;
+    -fx-pref-height: 75;
     -fx-background-color: -fx-main_accent;
+    -fx-border-color: black;
+    -fx-border-width: 1;
+    -fx-border-radius: 3;
+}
+
+#large-button {
+    -fx-pref-height: 150;
+    -fx-pref-width: 150;
+    /*-fx-font-size: 20; */
+}
+
+#small-button {
+    -fx-pref-height: 25;
+    -fx-pref-width: 100;
+}
+
+/* hbox css */
+.hbox {
+    -fx-pref-width: 600;
+    -fx-pref-height: 325;
+    -fx-min-width: 125;
+    -fx-padding: 15;
+    -fx-spacing: 20;
+}
+
+#top-hbox {
+    -fx-pref-height: 125;
+    -fx-max-height: 200;
+}
+
+#top-middle-hbox {
+    -fx-pref-width: 375;
+    -fx-max-width: 375;
+    -fx-max-height: 200;
+}
+/* vbox css */
+.vbox {
+    -fx-padding: 15;
+    -fx-spacing: 20;
+}
+
+/* text css */
+.text {
+    -fx-font-size: 13px;
+}
+
+#title-text {
+    -fx-font-size: 25px;
+}
+
+#title-text-start {
+    -fx-font-size: 50px;
 }

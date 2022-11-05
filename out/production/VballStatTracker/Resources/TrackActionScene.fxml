@@ -5,12 +5,21 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="vBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.TrackActionController">
+<VBox fx:id="vBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.TrackActionController">
    <children>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <HBox id="top-hbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="hbox">
          <children>
-            <Button mnemonicParsing="false" onAction="#goBack" text="Back" />
-            <Text fx:id="playerNameAndNum" strokeType="OUTSIDE" strokeWidth="0.0" text="Name of Player + Number" />
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="125.0" styleClass="hbox">
+               <children>
+                  <Button id="small-button" mnemonicParsing="false" onAction="#goBack" text="Back" />
+               </children>
+            </HBox>
+            <HBox id="top-middle-hbox" alignment="CENTER" prefHeight="100.0" prefWidth="300.0" styleClass="hbox">
+               <children>
+                  <Text id="title-text" fx:id="playerNameAndNum" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Name of Player + Number" wrappingWidth="297.1451873779297" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" styleClass="hbox" />
          </children>
       </HBox>
    </children>

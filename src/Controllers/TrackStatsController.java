@@ -48,10 +48,13 @@ public class TrackStatsController {
 
         HBox hBoxItems1 = new HBox();
         hBoxItems1.setAlignment(Pos.CENTER);
+        hBoxItems1.getStyleClass().add("hbox");
         HBox hBoxItems2 = new HBox();
         hBoxItems2.setAlignment(Pos.CENTER);
+        hBoxItems2.getStyleClass().add("hbox");
         HBox hBoxItems3 = new HBox();
         hBoxItems3.setAlignment(Pos.CENTER);
+        hBoxItems3.getStyleClass().add("hbox");
 
         //maps players 3 per row
         for (Map.Entry<Integer, String> me : players_map.entrySet()) {

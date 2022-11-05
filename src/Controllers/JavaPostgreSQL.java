@@ -585,7 +585,7 @@ public class JavaPostgreSQL {
                 "JOIN players p ON s.player_id = p.player_id\n" +
                 "JOIN action_type atype ON s.action_type_id = atype.action_type_id\n" +
                 "WHERE s.event_id = ?::int\n" +
-                "ORDER BY s.stat_id";
+                "ORDER BY s.stat_id DESC";
 
         try (PreparedStatement pst = con.prepareStatement(query)) {
             pst.setInt(1, curEventID);

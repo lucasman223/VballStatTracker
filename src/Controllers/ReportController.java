@@ -129,17 +129,17 @@ public class ReportController {
 
         reportTable.getColumns().clear();
 
-        //Attempts, Kill%, Error%, Efficency%
+        //Attempts, Kills, Errors, Efficency%
         TableColumn<Report, String> playerCol = new TableColumn<>("Player");
         playerCol.setCellValueFactory(new PropertyValueFactory<>("playerString"));
 
         TableColumn<Report, String> attemptsCol = new TableColumn<>("Attempts");
         attemptsCol.setCellValueFactory(new PropertyValueFactory<>("attackAttempts"));
 
-        TableColumn<Report, String> ratingCol = new TableColumn<>("Kill %");
+        TableColumn<Report, String> ratingCol = new TableColumn<>("Total Kills");
         ratingCol.setCellValueFactory(new PropertyValueFactory<>("attackKill"));
 
-        TableColumn<Report, String> errorCol = new TableColumn<>("Error %");
+        TableColumn<Report, String> errorCol = new TableColumn<>("Total Errors");
         errorCol.setCellValueFactory(new PropertyValueFactory<>("attackError"));
 
         TableColumn<Report, String> effCol = new TableColumn<>("Efficiency %");

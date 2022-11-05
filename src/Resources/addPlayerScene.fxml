@@ -6,22 +6,31 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.addPlayerController">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.addPlayerController">
    <children>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <HBox id="top-hbox" alignment="CENTER" prefHeight="219.0" prefWidth="600.0" styleClass="hbox">
          <children>
-            <Button mnemonicParsing="false" onAction="#goBack" text="Back" />
-            <Text fx:id="teamText" strokeType="OUTSIDE" strokeWidth="0.0" text="Name of Team" />
-            <Button mnemonicParsing="false" onAction="#addPlayer" text="Add Player" />
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button id="small-button" mnemonicParsing="false" onAction="#goBack" text="Back" />
+               </children>
+            </HBox>
+            <HBox id="top-middle-hbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Text id="title-text" fx:id="teamText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Name of Team" textAlignment="CENTER" wrappingWidth="325.0" />
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" />
          </children>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="CENTER" prefHeight="93.0" prefWidth="600.0" styleClass="hbox">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Name" />
             <TextField fx:id="nameTF" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Number" />
             <TextField fx:id="numTF" prefHeight="25.0" prefWidth="48.0" />
          </children>
       </HBox>
+      <Button mnemonicParsing="false" onAction="#addPlayer" text="Add Player" />
    </children>
 </VBox>

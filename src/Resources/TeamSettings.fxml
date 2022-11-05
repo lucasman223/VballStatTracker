@@ -7,26 +7,38 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.TeamSettingsController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.TeamSettingsController">
    <children>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <HBox id="top-hbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="hbox">
          <children>
-            <Button mnemonicParsing="false" onAction="#goBack" text="Back" />
-            <Text fx:id="teamName" strokeType="OUTSIDE" strokeWidth="0.0" text="Name of Team" />
-            <Button mnemonicParsing="false" onAction="#saveSettings" text="Save" />
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button id="small-button" mnemonicParsing="false" onAction="#goBack" text="Back" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Text id="title-text" fx:id="teamName" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Name of Team" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button id="small-button" mnemonicParsing="false" onAction="#saveSettings" text="Save" />
+               </children>
+            </HBox>
          </children>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="149.0" prefWidth="600.0">
+      <HBox alignment="CENTER" prefHeight="307.0" prefWidth="600.0" styleClass="hbox">
          <children>
-            <VBox alignment="CENTER" prefHeight="100.0" prefWidth="288.0">
+            <VBox alignment="CENTER" prefHeight="100.0" prefWidth="288.0" styleClass="vbox">
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Change Name" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Change Name" />
                         <TextField fx:id="changeNameTF" />
                      </children>
                   </HBox>
-                  <Button mnemonicParsing="false" onAction="#deleteCol" text="Delete Person" />
+                  <Button id="small-button" mnemonicParsing="false" onAction="#deleteCol" text="Delete Person" />
                </children>
             </VBox>
             <TableView fx:id="playerList" prefHeight="200.0" prefWidth="200.0" />

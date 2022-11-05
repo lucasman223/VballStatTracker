@@ -123,8 +123,6 @@ public class Report {
 
         if (attackAttempts > 0) {
             attackEff = attackEff / attackAttempts;
-            attackKill = attackKill / attackAttempts;
-            attackError = attackError / attackAttempts;
         }
 
         if (setAttempts > 0) {

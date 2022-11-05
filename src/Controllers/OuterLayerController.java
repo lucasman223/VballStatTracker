@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -36,6 +37,7 @@ public class OuterLayerController {
 
         HBox hboxItems = new HBox();
         hboxItems.setAlignment(Pos.CENTER);
+        hboxItems.getStyleClass().add("hbox");
 
         for (Map.Entry<Integer, String> me : teams_map.entrySet()) {
             Button team_button = new Button(me.getValue());

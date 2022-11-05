@@ -6,19 +6,30 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.InitActionPlayersController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.InitActionPlayersController">
    <children>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <HBox id="top-hbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="hbox">
          <children>
-            <Button mnemonicParsing="false" onAction="#goBack" text="Back" />
-            <Text fx:id="teamNameAndEvent" strokeType="OUTSIDE" strokeWidth="0.0" text="Name of Team + Event" />
-            <Button mnemonicParsing="false" onAction="#initActionButtonsScene" text="Next" />
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="hbox">
+               <children>
+                  <Button id="small-button" mnemonicParsing="false" onAction="#goBack" text="Back" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="hbox">
+               <children>
+                  <Text id="title-text" fx:id="teamNameAndEvent" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Name of Team + Event" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" styleClass="hbox">
+               <children>
+                  <Button id="small-button" mnemonicParsing="false" onAction="#initActionButtonsScene" text="Next" />
+               </children>
+            </HBox>
          </children>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="CENTER" prefHeight="300.0" prefWidth="600.0" styleClass="hbox">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select Players to Track" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Select Players to Track" />
             <TableView fx:id="playerList" prefHeight="200.0" prefWidth="200.0" />
          </children>
       </HBox>
